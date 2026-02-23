@@ -51,6 +51,13 @@
             require-prior-idle-ms = <120>;
         };
 
+        /* Tap-dance screenshot: tap=freeform (Cmd+Shift+4), double-tap=toolbar (Cmd+Shift+5) */
+        ss_tap: ss_tap {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            bindings = <&ss_free>, <&ss_toolbar>;
+        };
+
         para: para {
             compatible = "zmk,behavior-tap-dance";
             #binding-cells = <0>;
@@ -101,6 +108,18 @@
                 <&macro_release>, <&kp LCTRL>;
         };
 
+        /* macOS screenshot freeform: Cmd+Shift+4 */
+        ss_free: ss_free {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings =
+                <&macro_press>,   <&kp LGUI>,
+                <&macro_press>,   <&kp LSHFT>,
+                <&macro_tap>,     <&kp N4>,
+                <&macro_release>, <&kp LSHFT>,
+                <&macro_release>, <&kp LGUI>;
+        };
+
         /* macOS screenshot toolbar: Cmd+Shift+5 */
         ss_toolbar: ss_toolbar {
             compatible = "zmk,behavior-macro";
@@ -109,18 +128,6 @@
                 <&macro_press>,   <&kp LGUI>,
                 <&macro_press>,   <&kp LSHFT>,
                 <&macro_tap>,     <&kp N5>,
-                <&macro_release>, <&kp LSHFT>,
-                <&macro_release>, <&kp LGUI>;
-        };
-
-        /* macOS screenshot select: Cmd+Shift+4 */
-        ss_select: ss_select {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings =
-                <&macro_press>,   <&kp LGUI>,
-                <&macro_press>,   <&kp LSHFT>,
-                <&macro_tap>,     <&kp N4>,
                 <&macro_release>, <&kp LSHFT>,
                 <&macro_release>, <&kp LGUI>;
         };
@@ -272,12 +279,12 @@
         compatible = "zmk,keymap";
 
         DEF {
-            display-name = "Base";
+            display-name = "Home";
             bindings = <
                 &kp ESCAPE      &kp Q           &kp W           &kp E           &kp R           &kp T              &kp Y           &kp U           &kp I           &kp O           &kp P           &kp BACKSPACE
-                &kp TAB         &hm LCTRL A     &hm LALT S      &hm LGUI D      &hm LSHFT F     &kp G              &kp H           &hm LSHFT J     &hm LGUI K      &hm LALT L      &hm LCTRL SEMI  &ss_toolbar
+                &kp TAB         &hm LCTRL A     &hm LALT S      &hm LGUI D      &hm LSHFT F     &kp G              &kp H           &hm LSHFT J     &hm LGUI K      &hm LALT L      &hm LCTRL SEMI  &kp SQT
                 &cw_caps CAPSLOCK 0
-                                &kp Z           &kp X           &kp C           &kp V           &kp B              &kp N           &kp M           &kp COMMA       &kp DOT         &kp FSLH        &ss_select
+                                &kp Z           &kp X           &kp C           &kp V           &kp B              &kp N           &kp M           &kp COMMA       &kp DOT         &kp FSLH        &ss_tap
 
                 &tog SYM        &tog NUM        &mo MOU         &sp_nav NAV SPACE   &lt SYS RET   &kp DELETE
             >;
@@ -330,14 +337,11 @@
         NAV {
             display-name = "Nav";
             bindings = <
-                &trans          &trans          &trans          &trans          &trans          &trans
-                                &trans          &trans          &kp PAGE_DOWN   &kp PAGE_UP     &trans          &trans
+                &trans          &trans          &trans          &trans          &trans          &msc SCRL_UP     &trans          &msc SCRL_DOWN          &msc SCRL_UP          &kp PAGE_DOWN   &kp PAGE_UP          &trans
 
-                &kp LSHFT       &trans          &trans          &trans          &trans          &trans
-                                &kp LEFT_ARROW  &kp DOWN_ARROW  &kp UP_ARROW    &kp RIGHT_ARROW &browsertab_back &browsertab_fwd
+                &kp LSHFT       &trans          &trans          &trans          &trans          &msc SCRL_DOWN   &kp LEFT_ARROW  &kp DOWN_ARROW  &kp UP_ARROW    &kp RIGHT_ARROW &browsertab_back &browsertab_fwd
 
-                &trans          &trans          &kp LGUI        &kp LALT        &trans          &trans
-                                &nav_word_left  &nav_doc_bottom &nav_doc_top    &nav_word_right &trans          &trans
+                &trans          &trans          &kp LGUI        &kp LALT        &trans          &trans           &nav_word_left  &nav_doc_bottom &nav_doc_top    &nav_word_right &trans          &trans
 
                                                 &trans          &trans          &trans          &trans          &trans          &trans
             >;
